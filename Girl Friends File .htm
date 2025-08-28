@@ -1,0 +1,681 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mobile UI</title>
+  <style>
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  font-family: 'Helvetica Neue', sans-serif;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: #fff;
+  color: #333;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.header-title {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.header-icons {
+  display: flex;
+  gap: 20px;
+}
+
+.header-icons svg {
+  width: 20px;
+  height: 20px;
+  fill: #333;
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  text-align: center;
+}
+
+.main h2 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 6px;
+}
+
+.main p {
+  font-size: 12px;
+  color: #aaa;
+}
+
+/* Account Page Styles */
+.account-page {
+  display: none;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+.profile-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(to bottom right, #f50057, #d500f9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 15px;
+  color: white;
+  font-size: 32px;
+  font-weight: bold;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+.account-name {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.account-id {
+  font-size: 12px;
+  color: #777;
+  background: #f5f5f5;
+  padding: 6px 12px;
+  border-radius: 20px;
+  margin-bottom: 10px;
+}
+
+.account-actions {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.account-button {
+  padding: 8px 12px;
+  border-radius: 20px;
+  border: none;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.edit-profile-btn {
+  background: linear-gradient(to bottom right, #f50057, #d500f9);
+  color: white;
+}
+
+.member-account-btn {
+  background: #f5f5f5;
+  color: #333;
+}
+
+.tab-bar {
+  position: relative;
+  background: #fff;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 65px;
+  border-top: 1px solid #eee;
+}
+
+.tab {
+  flex: 1;
+  text-align: center;
+  font-size: 10px;
+  color: #999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+
+.tab.active {
+  color: #e91e63;
+  font-weight: 500;
+}
+
+.tab svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
+.diamond-button {
+  position: absolute;
+  top: -28px;
+  left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(to bottom right, #f50057, #d500f9);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  border: none;
+}
+
+.diamond-button svg {
+  transform: rotate(-45deg);
+  width: 22px;
+  height: 22px;
+  fill: #fff;
+}
+
+/* Edit Profile Modal */
+.edit-profile-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 100;
+  justify-content: center;
+  align-items: center;
+}
+
+.edit-profile-content {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 80%;
+  max-width: 400px;
+}
+
+.edit-profile-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.edit-profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.edit-profile-input {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.upload-image-btn {
+  padding: 10px;
+  background: #f5f5f5;
+  border: 1px dashed #ccc;
+  border-radius: 5px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.edit-profile-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.edit-profile-buttons button {
+  flex: 1;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.save-btn {
+  background: linear-gradient(to bottom right, #f50057, #d500f9);
+  color: white;
+}
+
+.cancel-btn {
+  background: #f5f5f5;
+  color: #333;
+}
+
+/* Member Account Page */
+.member-account-page {
+  display: none;
+  flex: 1;
+  padding: 20px;
+}
+
+.member-account-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.member-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.member-input {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.member-submit-btn {
+  background: linear-gradient(to bottom right, #f50057, #d500f9);
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 5px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+/* Post Styles */
+.post {
+  display: none;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 15px;
+}
+
+.post-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.post-profile {
+  width: 60px;   /* Account နဲ့ တူအောင် */
+  height: 60px;  /* Account နဲ့ တူအောင် */
+  border-radius: 50%;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  margin-right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 32px; /* Account နဲ့ တူအောင် */
+  background-color: #f0f0f0;
+}
+
+.post-user {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.post-details {
+  font-size: 12px;
+  color: #777;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.post-detail {
+  display: flex;
+}
+
+.post-label {
+  font-weight: 500;
+  min-width: 80px;
+}
+
+/* Interests Styles */
+.interests-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 5px;
+}
+
+.interest-tag {
+  background-color: #ffebee;
+  color: #d32f2f;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+}
+
+.add-interest {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.add-interest-input {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.add-interest-btn {
+  background: none;
+  border: none;
+  color: #e91e63;
+  font-size: 18px;
+  margin-left: 5px;
+  cursor: button;
+}
+
+/* Post Actions Buttons */
+.post-actions {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 15px;
+}
+
+.action-btn {
+  flex: 1;
+  margin: 0 5px;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  background: linear-gradient(to bottom right, #f50057, #d500f9);
+  color: white;
+}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-title">My App</div>
+    <div class="header-icons">
+      <svg viewBox="0 0 24 24">
+        <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+      </svg>
+      <svg viewBox="0 0 24 24" onclick="showMemberAccount()">
+        <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+      </svg>
+    </div>
+  </header>
+
+<div class="main" id="mainContent">
+  <div class="empty-state" id="emptyState">
+    <h2>Empty Collection</h2>
+    <p>Click on button at the bottom to add items.</p>
+  </div>
+
+  <div class="post" id="post">
+    <div class="post-header">
+      <div class="post-profile" id="postProfile">U</div>
+      <div>
+        <div class="post-user" id="postUsername">User Name</div>
+        <div class="post-age">Age: <span id="postAge">Not specified</span></div>
+      </div>
+    </div>
+
+    <div class="post-details">
+      <div class="post-detail">
+        <span class="post-label">Interests:</span>
+        <div class="interests-container" id="interestsContainer"></div>
+      </div>
+    </div>
+
+    <div class="post-actions">
+      <button class="action-btn">ဈေး</button>
+      <button class="action-btn">Command</button>
+      <button class="action-btn">ငှားမည်</button>
+    </div>
+  </div>
+</div>
+  <div class="account-page" id="accountPage">
+    <div class="profile-circle" id="profileCircle">U</div>
+    <div class="account-name" id="accountName">User Name</div>
+    <div class="account-id">ID: 7X9P2R5M</div>
+    <div class="account-actions">
+      <button class="account-button edit-profile-btn" onclick="showEditProfile()">Edit Profile</button>
+      <button class="account-button member-account-btn" onclick="showMemberAccount()">Member Account</button>
+    </div>
+  </div>
+
+  <div class="member-account-page" id="memberAccountPage">
+    <div class="member-account-title">Member Account</div>
+    <form class="member-form" id="memberForm">
+      <input type="number" class="member-input" id="memberAge" placeholder="Age" min="1" max="120">
+      <input type="text" class="member-input" id="memberActivities" placeholder="Activities">
+      <input type="text" class="member-input" id="memberBudget" placeholder="Budget">
+      <div>
+        <div>Interests:</div>
+        <div class="interests-container" id="memberInterestsContainer"></div>
+        <div class="add-interest">
+          <input type="text" class="add-interest-input" id="newInterestInput" placeholder="Add interest">
+          <button type="button" class="add-interest-btn" onclick="addInterest()">+</button>
+        </div>
+      </div>
+      <button type="button" class="member-submit-btn" onclick="submitMemberInfo()">Submit</button>
+    </form>
+  </div>
+
+  <!-- Edit Profile Modal -->
+  <div class="edit-profile-modal" id="editProfileModal">
+    <div class="edit-profile-content">
+      <div class="edit-profile-title">Edit Profile</div>
+      <form class="edit-profile-form" id="editProfileForm">
+        <div class="upload-image-btn" id="uploadImageBtn">
+          Click to upload profile picture
+          <input type="file" id="profileImageInput" accept="image/*" style="display: none;">
+        </div>
+        <input type="text" class="edit-profile-input" id="profileNameInput" placeholder="Enter your name">
+        <div class="edit-profile-buttons">
+          <button type="button" class="cancel-btn" onclick="hideEditProfile()">Cancel</button>
+          <button type="button" class="save-btn" onclick="saveProfile()">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="tab-bar">
+    <!-- Home Tab -->
+    <div class="tab active" onclick="showHome()">
+      <svg viewBox="0 0 24 24">
+        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+      </svg>
+      <div>Home</div>
+    </div>
+
+    <!-- Love (Heart) Center Button -->
+    <button class="diamond-button" aria-label="Love">
+      <svg viewBox="0 0 24 24">
+        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 
+          2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 
+          4.5 2.09C13.09 3.81 14.76 3 16.5 3 
+          19.58 3 22 5.42 22 8.5c0 3.78-3.4 
+          6.86-8.55 11.54L12 21.35z"/>
+      </svg>
+    </button>
+
+    <!-- Account Tab -->
+    <div class="tab" onclick="showAccount()">
+      <svg viewBox="0 0 24 24">
+        <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 
+          2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 
+          5v3h20v-3c0-3.3-6.7-5-10-5z"/>
+      </svg>
+      <div>Account</div>
+    </div>
+  </div>
+
+<script>
+  let currentProfileImage = '';
+  let currentProfileName = 'User Name';
+  let hasPosted = false;
+  let interests = [];
+
+  function showHome() {
+    document.getElementById('mainContent').style.display = 'flex';
+    document.getElementById('accountPage').style.display = 'none';
+    document.getElementById('memberAccountPage').style.display = 'none';
+    
+    if (hasPosted) {
+      document.getElementById('emptyState').style.display = 'none';
+      document.getElementById('post').style.display = 'block';
+    } else {
+      document.getElementById('emptyState').style.display = 'flex';
+      document.getElementById('post').style.display = 'none';
+    }
+    
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.classList.remove('active');
+    });
+    document.querySelectorAll('.tab')[0].classList.add('active');
+  }
+
+  function showAccount() {
+    document.getElementById('mainContent').style.display = 'none';
+    document.getElementById('accountPage').style.display = 'flex';
+    document.getElementById('memberAccountPage').style.display = 'none';
+    
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.classList.remove('active');
+    });
+    document.querySelectorAll('.tab')[2].classList.add('active');
+    
+    const randomChars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    let randomId = '';
+    for (let i = 0; i < 8; i++) {
+      randomId += randomChars.charAt(Math.floor(Math.random() * randomChars.length));
+    }
+    document.querySelector('.account-id').textContent = `ID: ${randomId}`;
+  }
+
+  function showMemberAccount() {
+    document.getElementById('mainContent').style.display = 'none';
+    document.getElementById('accountPage').style.display = 'none';
+    document.getElementById('memberAccountPage').style.display = 'block';
+    
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.classList.remove('active');
+    });
+  }
+
+  function showEditProfile() {
+    document.getElementById('editProfileModal').style.display = 'flex';
+    document.getElementById('profileNameInput').value = currentProfileName;
+  }
+
+  function hideEditProfile() {
+    document.getElementById('editProfileModal').style.display = 'none';
+  }
+
+  function saveProfile() {
+    const nameInput = document.getElementById('profileNameInput');
+    if (nameInput.value.trim() !== '') {
+      currentProfileName = nameInput.value.trim();
+      document.getElementById('accountName').textContent = currentProfileName;
+      document.getElementById('postUsername').textContent = currentProfileName;
+    }
+    hideEditProfile();
+  }
+
+  function addInterest() {
+    const input = document.getElementById('newInterestInput');
+    const interest = input.value.trim();
+    if (interest && interests.length < 10) {
+      interests.push(interest);
+      renderInterests();
+      input.value = '';
+    }
+  }
+
+  function renderInterests() {
+    const container = document.getElementById('memberInterestsContainer');
+    container.innerHTML = '';
+    interests.forEach(interest => {
+      const tag = document.createElement('div');
+      tag.className = 'interest-tag';
+      tag.textContent = interest;
+      container.appendChild(tag);
+    });
+
+    const postContainer = document.getElementById('interestsContainer');
+    postContainer.innerHTML = '';
+    interests.forEach(interest => {
+      const tag = document.createElement('div');
+      tag.className = 'interest-tag';
+      tag.textContent = interest;
+      postContainer.appendChild(tag);
+    });
+  }
+
+  function submitMemberInfo() {
+    const age = document.getElementById('memberAge').value;
+
+    // Update post info
+    if (age) document.getElementById('postAge').textContent = age;
+    if (currentProfileName) document.getElementById('postUsername').textContent = currentProfileName;
+
+    // Post show flag
+    hasPosted = true;
+    showHome(); // ✅ Submit ပြီးတာနဲ့ Home ထပ်ပြန်ပြီး Post ပေါ်မယ်
+  }
+
+  document.getElementById('uploadImageBtn').addEventListener('click', function() {
+    document.getElementById('profileImageInput').click();
+  });
+
+  document.getElementById('profileImageInput').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        currentProfileImage = event.target.result;
+        document.getElementById('profileCircle').style.backgroundImage = `url(${currentProfileImage})`;
+        document.getElementById('profileCircle').textContent = '';
+        document.getElementById('postProfile').style.backgroundImage = `url(${currentProfileImage})`;
+        document.getElementById('postProfile').textContent = '';
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+
+  showHome();
+</script>
+</body>
+</html>
